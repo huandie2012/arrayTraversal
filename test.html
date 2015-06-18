@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>笔试题</title>
+    <link rel="stylesheet" href="../test/stylesheets/test.css">
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="test">
+        <div class="outer">
+            <div class="search">
+                <input type="text" placeholder="搜索你想邀请的人">
+                <p class="J_warn">您已邀请 <a href="#" class="J_people">周源、黄继新</a> 等 <span class="J_num">2</span> 人</p>
+            </div>
+            <h1>推荐人选</h1>
+            <div class="back">
+                <ul class="clearfix">
+                    <li class="clearfix">
+                        <div class="img">
+                            <img src="../test/stylesheets/image/user_avatar_4.png">
+                        </div>
+                        <div class="character J_character">
+                            <a href="#">周源</a>
+                            <p>知乎 001 号员工</p>
+                        </div>
+                        <div class="J_btn">
+                            <button num="1">收回邀请</button>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="img">
+                            <img src="../test/stylesheets/image/user_avatar_5.png">
+                        </div>
+                        <div class="character J_character">
+                            <a href="#">黄维新</a href="#">
+                            <p>和知乎在一起</p>
+                        </div>
+                        <div class="back-btn J_btn">
+                            <button num="2">收回邀请</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="answer">
+                <ul class="clearfix">
+                    <li class="clearfix">
+                        <div class="img">
+                            <img src="../test/stylesheets/image/user_avatar_6.png">
+                        </div>
+                        <div class="character J_character">
+                            <a href="#">李申申</a>
+                            <p>知乎 002 号员工</p>
+                        </div>
+                        <div class="J_btn">
+                           <button num="0">邀请回答</button> 
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="img">
+                            <img src="../test/stylesheets/image/user_avatar_7.png">
+                        </div>
+                        <div class="character J_character">
+                            <a href="#">Raymond Wang</a>
+                            <p>lawyer</p>
+                        </div>
+                        <div class="answer-btn J_btn">
+                            <button num="0">邀请回答</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        //人名数组
+        var $nameList = $('.J_character');
+        //存人数,最开始的人数为2
+        var count = 2;
+
+        var $btn = $('.J_character+.J_btn').children('button');
+
+        $btn.click(function (){
+            //再通过类来改变按钮的名字
+            if($(this).attr('num') == '0'){
+
+                count++;
+
+                $(this).attr('num',count);
+
+                $(this).text("收回邀请");
+
+            }else{
+
+                count--;
+
+                deleteNum($(this).attr('num'));
+
+                $(this).attr('num', 0);
+
+                $(this).text("邀请回答");
+
+            }
+            //设置对邀请的描述
+            checkNameList();
+
+        });
+
+        function checkNameList(){
+            //存人名
+            var names = "";
+            //存第二个人名
+            var secondName = "";
+            //循环遍历数组
+            for(var i = 0; i < $nameList.size(); i++){
+
+                var $thisName = $($nameList.get(i));
+
+                var $thisBtn = $thisName.next('.J_btn').children('button');
+
+                var $a = $thisName.children('a');
+
+                var $num = Number($thisBtn.attr('num'));
+                //判断这个人对应的按钮的类
+                if($num == count){
+
+                    names = $a.text();
+
+                }
+
+                else if($num == count-1 && count > 1){
+
+                    secondName = $a.text();
+
+                }
+
+            }
+
+            if(secondName != ""){
+
+                names += " 、" + secondName;
+
+            }
+
+            if(count == 0){
+                //如果没人的描述
+                $('.J_warn').html('您没有邀请任何人');
+
+            }else{
+                //如果有人的描述
+                $('.J_warn').html('<p class="J_warn">您已邀请 <a href="#" class="J_people"></a> 等 <span class="J_num"></span> 人</p>');
+
+                $('.J_people').text(names);
+
+                $('.J_num').text(count);
+
+            }
+
+        }
+        function deleteNum(deleteNum){
+
+            for(var i = 0; i<$nameList.size(); ++i){
+
+                var $thisName = $($nameList.get(i));
+
+                var $thisBtn = $thisName.next('.J_btn').children('button');
+
+                var $num = Number($thisBtn.attr('num'));
+
+                if($num > Number(deleteNum)) {
+
+                    $thisBtn.attr('num', $num-1);
+
+                }
+
+            }
+
+        }
+    </script>
+</body>
+</html>
